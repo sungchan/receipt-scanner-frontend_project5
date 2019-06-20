@@ -18,7 +18,7 @@ class AddReceipt extends React.Component {
               <br/>
               <br/>
               <Image size="small" centered src={"https://res.cloudinary.com/sungchan/image/upload/v1560996189/receipt-7_i6fvbo.png"}/>
-              <Header as='H1'>Check Splitter </Header>
+              <Header as='h1'>Check Splitter </Header>
               <br/>
               <Divider horizontal>-</Divider>
               <br/>
@@ -28,7 +28,7 @@ class AddReceipt extends React.Component {
           }
 
           {this.props.notPhotoError &&
-            "Uploaded File must be a photo"
+            <h3>Uploaded File must be a photo</h3>
           }
 
           {(this.props.thumbnail) &&

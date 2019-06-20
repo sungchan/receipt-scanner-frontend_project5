@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Progress } from 'semantic-ui-react';
+import { Progress } from 'semantic-ui-react';
 // import {Image, Video, Transformation, CloudinaryContext} from 'cloudinary-react';
 
 import api from './services/api';
@@ -18,9 +18,12 @@ import ResultPage from './containers/resultPage';
 class App extends React.Component {
 
   state = {
-    imgUrl: "https://res.cloudinary.com/sungchan/image/upload/v1560827387/user%20icons/v4oyfkvy3enpvo8oexij.jpg",
+    imgUrl: "",
     thumbnail: '',
     notPhotoError: false,
+    noSelectedUerError: false,
+    noPayerSelectedError: false,
+    notAllItemsSplitError: false,
     placeName: '',
     itemsArray: [],
     createdItemsArray: [],
@@ -34,12 +37,14 @@ class App extends React.Component {
     selectedUsers: [],
     checkStage: 'ADD', //'ADD', 'USER', 'EDIT', 'SPlIT', 'RESULTS'
     currentReceiptId: null,
-    payer: {},
+    payer:{},
     itemSplits: {},
     createdItemSplits: [],
-    userCosts: [{john: 6.735},{bob: 3.245}],
-    progressPercentage: 20,
+    userCosts: [],
+    progressPercentage: 0,
     loading: false
+
+
   }
 
 //******************************************************
@@ -67,6 +72,7 @@ class App extends React.Component {
       }
     }
   }, (error, result) => {this.uploadResult(result)})
+
   showWidget = (widget) => {
     this.widget.open()
   }
@@ -74,7 +80,8 @@ class App extends React.Component {
     if (result.event === 'success'){
       this.setState({
         imgUrl: result.info.secure_url,
-        thumbnail: result.info.thumbnail_url
+        thumbnail: result.info.thumbnail_url,
+        progressPercentage: 20
       })
     }
   }
@@ -149,7 +156,11 @@ class App extends React.Component {
   }
 
   handleUserSelect = () => {
-    this.setState({ checkStage: 'EDIT', progressPercentage: 60 })
+    if (!this.state.selectedUsers.length) {
+      this.setState({ noSelectedUerError: true })
+    } else {
+      this.setState({ checkStage: 'EDIT', progressPercentage: 60 })
+    }
   }
 
 
@@ -266,11 +277,15 @@ class App extends React.Component {
 
   handleCheckEditSubmit = (e) => {
     e.preventDefault();
-    this.createReceipt()
+    if (!this.state.payer){
+      this.setState({ noPayerSelectedError: true })
+    } else {
+      this.createReceipt()
+    }
   }
 
   handlePayer = (e, { value }) => {
-    this.setState({ payer: value })
+    this.setState({ payer: value, noPayerSelectedError: false })
   }
 
 //******************************************************
@@ -284,26 +299,30 @@ class App extends React.Component {
   }
 
   submitSplit = () => {
-    let splitLength = 0
-    Object.values(this.state.itemSplits).forEach(e => splitLength += e.length)
+    if (Object.keys(this.state.itemSplits).length === this.state.itemsArray.length){
+      let splitLength = 0
+      Object.values(this.state.itemSplits).forEach(e => splitLength += e.length)
 
-    Object.keys(this.state.itemSplits).forEach(itemId => {
-      this.state.itemSplits[itemId].forEach(userId => {
-        api.addItemSplit({
-          item_id:itemId,
-          user_id:userId,
-          splitBetween: this.state.itemSplits[itemId].length
-        }).then(item => {
-          this.setState({
-            createdItemSplits: [...this.state.createdItemSplits, item]
-          }, () => {
-            if (this.state.createdItemSplits.length === splitLength){
-              this.calculateResults()
-            }
+      Object.keys(this.state.itemSplits).forEach(itemId => {
+        this.state.itemSplits[itemId].forEach(userId => {
+          api.addItemSplit({
+            item_id:itemId,
+            user_id:userId,
+            splitBetween: this.state.itemSplits[itemId].length
+          }).then(item => {
+            this.setState({
+              createdItemSplits: [...this.state.createdItemSplits, item]
+            }, () => {
+              if (this.state.createdItemSplits.length === splitLength){
+                this.calculateResults()
+              }
+            })
           })
         })
       })
-    })
+    } else {
+      this.setState({ notAllItemsSplitError: true })
+    }
   }
 
   calculateResults = () => {
@@ -316,7 +335,7 @@ class App extends React.Component {
         return acc + curr
       })
       total= total * (1 + (this.state.tipPerc?this.state.tipPerc:0 + this.state.taxPerc?this.state.taxPerc:0)/100)
-        return {[userData.name]: total}
+        return {[userData.name]: total, profile_url: userData.profile_url}
     })
 
     this.setState({ userCosts: userCosts}, () => {
@@ -337,8 +356,12 @@ class App extends React.Component {
       imgUrl: '',
       itemSplits: {},
       itemsArray: [],
+      notAllItemsSplitError: false,
       notPhotoError: false,
-      payer: {},
+      noPayerSelectedError: false,
+      noSelectedUerError: false,
+      payer: null,
+      progressPercentage: 0,
       selectedUsers: [],
       subTotal: null,
       tax: null,
@@ -385,6 +408,7 @@ class App extends React.Component {
             <UserSelect
               users={this.state.users}
               selectedUsers={this.state.selectedUsers}
+              noSelectedUerError={this.state.noSelectedUerError}
 
               handleUserSelect={this.handleUserSelect}
               handleUserSearchChange={this.handleUserSearchChange}
@@ -405,6 +429,7 @@ class App extends React.Component {
                 total={this.state.total}
                 subTotal={this.state.subTotal}
                 tax={this.state.tax}
+                noPayerSelectedError={this.state.noPayerSelectedError}
 
                 handleEditSubTotal={this.handleEditSubTotal}
                 handleEditTax={this.handleEditTax}
@@ -425,6 +450,8 @@ class App extends React.Component {
               createdItemsArray={this.state.createdItemsArray}
               selectedUsers={this.state.selectedUsers}
               itemSplits={this.state.itemSplits}
+              notAllItemsSplitError={this.state.notAllItemsSplitError}
+              imgUrl={this.state.imgUrl}
 
               handleAddItemSplit={this.handleAddItemSplit}
               submitSplit={this.submitSplit}
@@ -443,7 +470,6 @@ class App extends React.Component {
               handleAnotherReceipt={this.handleAnotherReceipt}
             />
           </React.Fragment>
-
         }
 
       </div>

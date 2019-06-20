@@ -13,10 +13,10 @@ class SplitCheckDropdown extends React.Component {
   })
 
   render (){
-    console.log(this.props.selectedUsers)
     return (
       <React.Fragment>
         <Dropdown
+          upward
           clearable
           search
           placeholder='Who ate this?'

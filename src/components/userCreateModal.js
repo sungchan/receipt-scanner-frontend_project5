@@ -8,7 +8,6 @@ class UserCreateModal extends React.Component {
   render(){
     return (
       <Modal
-        trigger={this.props.modelOpen}
         open={this.props.modalOpen}
         onClose={this.props.handleClose}
         closeIcon

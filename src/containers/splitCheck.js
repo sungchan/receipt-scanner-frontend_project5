@@ -1,25 +1,52 @@
 import React from 'react';
-import { Button, Container } from 'semantic-ui-react';
+import { Button, Container, Modal, Image, Popup } from 'semantic-ui-react';
 
 import SplitCheckDropdown from '../components/splitCheckDropdown';
 
 class SplitCheck extends React.Component {
 
   state = {
-    isOpen:false,
+    modalOpen:false,
   }
 
+  handleModalOpen = () => {
+    this.setState(prevState => ({
+      modalOpen: !prevState.modelOpen
+    }))
+  }
 
+  handleModalClose = () => {
+
+    this.setState({ modalOpen: false})
+  }
 
 
   render(){
     return (
       <Container textAlign='center'>
         <h1>Split Check</h1>
+        <Button secondary size="small" onClick={this.handleModalOpen}>View Receipt</Button>
+        <br/>
+        <br/>
+
+        <Modal
+          open={this.state.modalOpen}
+          onClose={this.handleModalClose}
+          closeIcon
+          basic size='huge'
+        >
+          <Image src={this.props.imgUrl}></Image>
+        </Modal>
+
         {this.props.createdItemsArray.map(item => {
           return (
             <React.Fragment>
-              <Button fluid onClick={()=>console.log('hello')}>{item.name}</Button>
+              <Popup
+                content={'$'+ parseFloat(item.cost).toFixed(2)}
+                on='click'
+                trigger={  <Button fluid>{item.name}</Button>}
+              />
+
                 <br/>
               <SplitCheckDropdown
                 selectedUsers={this.props.selectedUsers}
@@ -31,7 +58,12 @@ class SplitCheck extends React.Component {
             </React.Fragment>
           )
         })}
-        <Button onClick={this.props.submitSplit}> Split! </Button>
+
+        {this.props.notAllItemsSplitError &&
+          <h3>Please Assign all Items</h3>
+        }
+
+        <Button fluid primary size='huge' onClick={this.props.submitSplit}> Split! </Button>
       </Container>
     )
   }

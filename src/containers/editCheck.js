@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dropdown, Button, Container, Grid, Divider } from 'semantic-ui-react';
+import { Dropdown, Container, Divider } from 'semantic-ui-react';
 
-import CheckEditForm from '../components/CheckEditForm';
+import CheckEditForm from '../components/checkEditForm';
 
 class EditCheck extends React.Component {
 
@@ -15,38 +15,42 @@ class EditCheck extends React.Component {
   })
 
   render() {
-
     return (
       <Container textAlign='center'>
-          <h1>Edit Check</h1>
-           <h5>Paid</h5> by: <Dropdown
-            placeholder='Who paid?'
-            fluid
-            clearable
-            selection
-            options={this.usersArray}
-            onChange={this.props.handlePayer}
-            >
-          </Dropdown>
-          <br/>
-<Divider fitted />
-<br/>
-          <CheckEditForm
-            itemsArray = {this.props.itemsArray}
-            tipPerc={this.props.tipPerc}
-            tipAmnt={this.props.tipAmnt}
-            tax={this.props.tax}
-            subTotal={this.props.subTotal}
-            total={this.props.total}
+        <h1>Edit Check</h1>
+        {this.props.noPayerSelectedError &&
+          <h3>Please select a Payer</h3>
+        }
+         <h5>Paid by:</h5>  <Dropdown
+          placeholder='Who paid?'
+          fluid
+          clearable
+          selection
+          options={this.usersArray}
+          onChange={this.props.handlePayer}
+          >
+        </Dropdown>
 
-            handleEditSubTotal={this.props.handleEditSubTotal}
-            handleEditTax={this.props.handleEditTax}
-            handleCheckEditPrice = {this.props.handleCheckEditPrice}
-            handleCheckEditName = {this.props.handleCheckEditName}
-            handleCheckEditSubmit= {this.props.handleCheckEditSubmit}
-            handleTipPercCalc={this.props.handleTipPercCalc}
-            handleTipAmntCalc={this.props.handleTipAmntCalc}
-          />
+
+        <br/>
+        <Divider fitted />
+        <br/>
+        <CheckEditForm
+          itemsArray = {this.props.itemsArray}
+          tipPerc={this.props.tipPerc}
+          tipAmnt={this.props.tipAmnt}
+          tax={this.props.tax}
+          subTotal={this.props.subTotal}
+          total={this.props.total}
+
+          handleEditSubTotal={this.props.handleEditSubTotal}
+          handleEditTax={this.props.handleEditTax}
+          handleCheckEditPrice = {this.props.handleCheckEditPrice}
+          handleCheckEditName = {this.props.handleCheckEditName}
+          handleCheckEditSubmit= {this.props.handleCheckEditSubmit}
+          handleTipPercCalc={this.props.handleTipPercCalc}
+          handleTipAmntCalc={this.props.handleTipAmntCalc}
+        />
       </Container>
     )
   }

@@ -13,7 +13,6 @@ class UserSelect extends React.Component {
   }
 
   handleOpen = () =>{
-    console.log('help')
     this.setState(prevState => ({
       modalOpen: !prevState.modelOpen
     }))
@@ -24,7 +23,6 @@ class UserSelect extends React.Component {
   }
 
   handleChange = (e) => {
-    console.log(e.target.value)
     this.setState({ guest: e.target.value })
   }
 
@@ -66,8 +64,12 @@ class UserSelect extends React.Component {
           <br/>
           <br/>
           <br/>
-          <Button primary size="huge" centered onClick={this.props.handleUserSelect}>Split Check</Button>
-        </Container>
+          <Button fluid primary size="huge" centered onClick={this.props.handleUserSelect}>Split Check</Button>
+
+          {this.props.noSelectedUerError &&
+            <h3>Please select who you ate with</h3>
+          }
+      </Container>
       </React.Fragment>
     )
   }

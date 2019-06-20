@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, List, Divider } from 'semantic-ui-react';
+import { Form, Button, List, Divider } from 'semantic-ui-react';
 
 const CheckEditForm = props => {
 
@@ -57,7 +57,7 @@ const CheckEditForm = props => {
           <Divider fitted />
 
           <h2>Total: &nbsp; ${props.total}</h2>
-          <Button type='submit'>Split Check</Button>
+          <Button primary fluid size='huge' type='submit'>Split Check</Button>
       </List>
     </Form>
     </React.Fragment>
