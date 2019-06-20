@@ -19,12 +19,12 @@ class App extends React.Component {
 
   state = {
     imgUrl: "https://res.cloudinary.com/sungchan/image/upload/v1560827387/user%20icons/v4oyfkvy3enpvo8oexij.jpg",
-    thumbnail: 's',
+    thumbnail: '',
     notPhotoError: false,
     placeName: '',
     itemsArray: [],
     createdItemsArray: [],
-    subTotal: null,
+    subTotal: 34.35,
     tax: null,
     taxPerc: null,
     tipPerc: null,
@@ -32,7 +32,7 @@ class App extends React.Component {
     total: null,
     users: [],
     selectedUsers: [],
-    checkStage: 'EDIT', //'ADD', 'USER', 'EDIT', 'SPlIT', 'RESULTS'
+    checkStage: 'ADD', //'ADD', 'USER', 'EDIT', 'SPlIT', 'RESULTS'
     currentReceiptId: null,
     payer: {},
     itemSplits: {},
@@ -209,13 +209,13 @@ class App extends React.Component {
         return parseFloat(acc) + parseFloat(curr)
     })
     const subTotalCheck = subTotal ? subTotal:0
-    this.setState({subTotal: subTotalCheck}, () => {
+    this.setState({subTotal: subTotalCheck.toFixed(2)}, () => {
       this.calculateTotal()
     })
   }
   calculateTotal = () => {
     if (!isNaN(this.state.tipAmnt) && !isNaN(this.state.subTotal)) {
-      const total = ((this.state.subTotal ? this.state.subTotal:0) + this.state.tax + (this.state.tipAmnt ? this.state.tipAmnt:0) ).toFixed(2)
+      const total = ((this.state.subTotal ? parseFloat(this.state.subTotal):0) + this.state.tax + (this.state.tipAmnt ? this.state.tipAmnt:0) ).toFixed(2)
       this.setState({total: total})
     }
   }

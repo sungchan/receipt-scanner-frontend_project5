@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Button, Container, Grid } from 'semantic-ui-react';
+import { Dropdown, Button, Container, Grid, Divider } from 'semantic-ui-react';
 
 import CheckEditForm from '../components/CheckEditForm';
 
@@ -10,25 +10,27 @@ class EditCheck extends React.Component {
         key: user.name,
         text: user.name,
         value: user,
-        image: { avatar: true, src: 'https://res.cloudinary.com/sungchan/image/upload/v1560829909/00-ELASTOFONT-STORE-READY_user-circle-512_bg2kgc.png' },
+        image: { avatar: true, src: user.profile_url },
     })
   })
 
   render() {
 
     return (
-      <React.Fragment>
+      <Container textAlign='center'>
           <h1>Edit Check</h1>
-          <Dropdown
+           <h5>Paid</h5> by: <Dropdown
             placeholder='Who paid?'
             fluid
+            clearable
             selection
             options={this.usersArray}
             onChange={this.props.handlePayer}
-            search
             >
           </Dropdown>
-
+          <br/>
+<Divider fitted />
+<br/>
           <CheckEditForm
             itemsArray = {this.props.itemsArray}
             tipPerc={this.props.tipPerc}
@@ -45,7 +47,7 @@ class EditCheck extends React.Component {
             handleTipPercCalc={this.props.handleTipPercCalc}
             handleTipAmntCalc={this.props.handleTipAmntCalc}
           />
-      </React.Fragment>
+      </Container>
     )
   }
 }

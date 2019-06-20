@@ -1,18 +1,12 @@
 import React from 'react';
-import { Form, Input, Button, List } from 'semantic-ui-react';
+import { Form, Input, Button, List, Divider } from 'semantic-ui-react';
 
 const CheckEditForm = props => {
 
   return (
     <React.Fragment>
-      <List divided verticalAlign='middle'>
-        <Form onSubmit={props.handleCheckEditSubmit}>
-        <List.Item>
-          <List.Content>SubTotal</List.Content>
-          <List.Content floated='right'>
-            <Form.Input type="number" value={props.subTotal}/>
-          </List.Content>
-        </List.Item>
+      <Form onSubmit={props.handleCheckEditSubmit}>
+      <List >
 
 
           {props.itemsArray.map((item, i) => {
@@ -25,26 +19,47 @@ const CheckEditForm = props => {
               )
             }
           })}
+            <br/>
+            <Divider fitted />
+          <List.Item>
+            <List.Content floated='right'>
+                <h3>SubTotal: &nbsp; ${props.subTotal}</h3>
+            </List.Content>
+          </List.Item>
+            <br/>
+            <Divider fitted />
+          <List.Item>
+            <List.Content floated='right'>
+              <Form.Group inline>
+                <label>Tax &nbsp; $</label>
+                <Form.Input type="number" value={props.tax} onChange={props.handleEditTax}/>
+              </Form.Group>
+            </List.Content>
+          </List.Item>
 
-          <Form.Group inline>
-            <label>Tax</label>
-            <Form.Input type="number" value={props.tax} onChange={props.handleEditTax}/>
-          </Form.Group>
+          <List.Item>
+            <List.Content floated='right'>
+              <Form.Group inline>
+                  <label>Tip %</label>
+                  <Form.Input type='number' value={props.tipPerc} onChange={props.handleTipPercCalc}/>
+              </Form.Group>
+            </List.Content>
+          </List.Item>
 
-          <Form.Group inline>
-            <Form.Field>
-              <label>Tip</label>
-              <Input type='number' value={props.tipPerc} onChange={props.handleTipPercCalc}/>
-            </Form.Field>
-            <Form.Field>
-              <Input type='number' value={props.tipAmnt} onChange={props.handleTipAmntCalc}/>
-            </Form.Field>
-          </Form.Group>
+          <List.Item>
+            <List.Content floated='right'>
+              <Form.Group inline>
+                  <label>Tip Amount &nbsp; $</label>
+                  <Form.Input type='number' value={props.tipAmnt} onChange={props.handleTipAmntCalc}/>
+              </Form.Group>
+            </List.Content>
+          </List.Item>
+          <Divider fitted />
 
-          <h4>{props.total}</h4>
+          <h2>Total: &nbsp; ${props.total}</h2>
           <Button type='submit'>Split Check</Button>
-        </Form>
       </List>
+    </Form>
     </React.Fragment>
   )
 }

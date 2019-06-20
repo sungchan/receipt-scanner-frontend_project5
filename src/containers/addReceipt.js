@@ -22,6 +22,7 @@ class AddReceipt extends React.Component {
               <br/>
               <Divider horizontal>-</Divider>
               <br/>
+              <br/>
               <Button primary size="huge" onClick={this.props.showWidget}>Add Photo</Button>
             </Container>
           }

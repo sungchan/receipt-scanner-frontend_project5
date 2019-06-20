@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Container } from 'semantic-ui-react';
 
 import SplitCheckDropdown from '../components/splitCheckDropdown';
 
@@ -14,11 +14,12 @@ class SplitCheck extends React.Component {
 
   render(){
     return (
-      <div>
+      <Container textAlign='center'>
+        <h1>Split Check</h1>
         {this.props.createdItemsArray.map(item => {
           return (
             <React.Fragment>
-              <Button onClick={()=>console.log('hello')}>{item.name}</Button>
+              <Button fluid onClick={()=>console.log('hello')}>{item.name}</Button>
                 <br/>
               <SplitCheckDropdown
                 selectedUsers={this.props.selectedUsers}
@@ -31,7 +32,7 @@ class SplitCheck extends React.Component {
           )
         })}
         <Button onClick={this.props.submitSplit}> Split! </Button>
-      </div>
+      </Container>
     )
   }
 }
