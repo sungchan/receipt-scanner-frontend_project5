@@ -9,6 +9,7 @@ const itemizer = (receiptInfo) => {
 
   let receipt = receiptInfo.slice(1, receiptInfo.length)
   let xMidPoint = (receiptInfo[0].boundingPoly.vertices[0].x + receiptInfo[0].boundingPoly.vertices[1].x)/2
+  console.log('midpoint', xMidPoint)
   let isPrice = receipt.filter(item => item.boundingPoly.vertices[0].x > xMidPoint && item.description.includes('.'))
 
 
@@ -19,13 +20,17 @@ const itemizer = (receiptInfo) => {
       return item.boundingPoly.vertices[0].y < yValue + 6 && item.boundingPoly.vertices[3].y > yValue - 6
     })
 
+    console.log(rows)
+
     let price = rows.map(item => {
       if (item.boundingPoly.vertices[0].x > xMidPoint){
-        return item.description
+        return item.description.replace(/\$/g, '')
       }
     }).filter(item => {
+
       return !!parseFloat(item) || item === '.' || item === '00'
     })
+
 
     if (price[0] === '.'){
       price.shift()
@@ -33,13 +38,13 @@ const itemizer = (receiptInfo) => {
 
     let quantity = rows.map(item => {
       if (item.boundingPoly.vertices[0].x < xMidPoint ){
-        return item.description
+        return item.description.replace(/\$/g, '')
       }
     }).filter(item => {
       return !!parseInt(item)
     })
 
-    const name = (rows.map(item => item.description).filter(item => !parseInt(item) && item !== '.' && item !== '00').join(' '))
+    const name = (rows.map(item => item.description.replace(/\$/g, '')).filter(item => !parseInt(item) && item !== '.' && item !== '00').join(' '))
 
     return {
       'price': parseFloat(price.join('')),

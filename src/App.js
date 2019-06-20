@@ -1,13 +1,16 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Progress } from 'semantic-ui-react';
 // import {Image, Video, Transformation, CloudinaryContext} from 'cloudinary-react';
 
 import api from './services/api';
 import itemizer from './services/receiptItemizer';
 
+
+import AddReceipt from './containers/addReceipt';
 import UserSelect from './containers/userSelect';
 import EditCheck from './containers/editCheck';
 import SplitCheck from './containers/splitCheck';
+import ResultPage from './containers/resultPage';
 
 
 
@@ -15,7 +18,7 @@ import SplitCheck from './containers/splitCheck';
 class App extends React.Component {
 
   state = {
-    imgUrl: "https://res.cloudinary.com/sungchan/image/upload/v1560827636/s074852994-300_fzkrgc.jpg",
+    imgUrl: "https://res.cloudinary.com/sungchan/image/upload/v1560827387/user%20icons/v4oyfkvy3enpvo8oexij.jpg",
     thumbnail: 's',
     notPhotoError: false,
     placeName: '',
@@ -29,10 +32,14 @@ class App extends React.Component {
     total: null,
     users: [],
     selectedUsers: [],
-    checkStage: 'ADD', //'ADD', 'EDIT', 'SPlIT'
+    checkStage: 'EDIT', //'ADD', 'USER', 'EDIT', 'SPlIT', 'RESULTS'
     currentReceiptId: null,
     payer: {},
-    itemSplits: {}
+    itemSplits: {},
+    createdItemSplits: [],
+    userCosts: [{john: 6.735},{bob: 3.245}],
+    progressPercentage: 20,
+    loading: false
   }
 
 //******************************************************
@@ -72,18 +79,20 @@ class App extends React.Component {
     }
   }
 
-
 //******************************************************
 // STAGE= 'ADD'
 //******************************************************
+
   handleUpload = () => {
-    if (this.state.imgUrl && this.state.selectedUsers.length){
+    this.setState({
+      loading: true
+    })
+    if (this.state.imgUrl){
       api.processReceipt(this.state.imgUrl)
       .then(json => {
-
         const placeName = (json.responses[0].textAnnotations[0].description.split('\n')[0])
         const items = itemizer(json.responses[0].textAnnotations)
-        const subTotal = parseFloat(items.find(item => item.name.toLowerCase().includes("sub" && "total")).price)
+        const subTotal = items.find(item => item.name.toLowerCase().includes("sub" && "total"))
         const tax = items.find(item => item.name.toLowerCase().includes("tax"))
           ? items.find(item => item.name.toLowerCase().includes("tax")).price
           : 0
@@ -92,8 +101,8 @@ class App extends React.Component {
           || item.name.toLowerCase().includes("amount")
         )
         const tip = items.find(item => item.name.toLowerCase() === "gratuity" || item.name.toLowerCase() === "tip")
-            ? parseFloat(items.find(item => item.name.toLowerCase() === "gratuity" || item.name.toLowerCase() === "tip").price)
-            : null
+          ? parseFloat(items.find(item => item.name.toLowerCase() === "gratuity" || item.name.toLowerCase() === "tip").price)
+          : null
         const foodItems = items.filter(item => {
           return !(item.name.toLowerCase().includes('tax')
             || item.name.toLowerCase().includes('total')
@@ -101,32 +110,46 @@ class App extends React.Component {
             || item.name.toLowerCase() === 'gratuity'
             || item.name.toLowerCase().includes("amount")
             || !item.price
+            || item.yValue > subTotal.yValue
           )
         })
+
         this.setState({
           itemsArray: foodItems,
           tax: tax,
           taxPerc: (tax/subTotal),
-          subTotal: subTotal,
+          subTotal: parseFloat(subTotal.price),
           placeName: placeName,
           tipAmnt: tip,
           tipPerc: Math.round(tip/subTotal * 100),
           total: parseFloat(total.price)
         }, ()=> {
-          this.setState({  checkStage: 'EDIT' }); console.log(this.state)
+          this.setState({  checkStage: 'USER', progressPercentage: 40 });
         })
       })
     }
   }
 
+
+
+
+//******************************************************
+// STAGE= 'USER'
+//******************************************************
+
   handleUserSearchChange = (e, {value}) => {
     this.setState({ selectedUsers: value })
   }
+
   handleAddGuestSubmit = (name) => {
     api.addUser(name)
     .then(() =>api.grabUsers())
     .then(users => this.setState({users: users}))
 
+  }
+
+  handleUserSelect = () => {
+    this.setState({ checkStage: 'EDIT', progressPercentage: 60 })
   }
 
 
@@ -193,7 +216,7 @@ class App extends React.Component {
   calculateTotal = () => {
     if (!isNaN(this.state.tipAmnt) && !isNaN(this.state.subTotal)) {
       const total = ((this.state.subTotal ? this.state.subTotal:0) + this.state.tax + (this.state.tipAmnt ? this.state.tipAmnt:0) ).toFixed(2)
-      this.setState({total: total}, ()=> console.log(this.state))
+      this.setState({total: total})
     }
   }
   createReceipt = () => {
@@ -237,18 +260,17 @@ class App extends React.Component {
         })
       })
     })
-    this.setState({ checkStage: 'SPLIT' })
+    this.setState({ checkStage: 'SPLIT', progressPercentage: 80 })
   }
 
 
   handleCheckEditSubmit = (e) => {
-    console.log('here')
     e.preventDefault();
     this.createReceipt()
   }
 
   handlePayer = (e, { value }) => {
-    this.setState({ payer: value }, () => console.log(this.state.payer))
+    this.setState({ payer: value })
   }
 
 //******************************************************
@@ -258,20 +280,79 @@ class App extends React.Component {
   handleAddItemSplit = (e, { value }, id) => {
     this.setState({
       itemSplits: {...this.state.itemSplits, [id]: value}
-    }, () => console.log(this.state.itemSplits))
+    })
   }
 
   submitSplit = () => {
+    let splitLength = 0
+    Object.values(this.state.itemSplits).forEach(e => splitLength += e.length)
+
     Object.keys(this.state.itemSplits).forEach(itemId => {
       this.state.itemSplits[itemId].forEach(userId => {
         api.addItemSplit({
           item_id:itemId,
           user_id:userId,
           splitBetween: this.state.itemSplits[itemId].length
-        }).then(data => console.log(data))
+        }).then(item => {
+          this.setState({
+            createdItemSplits: [...this.state.createdItemSplits, item]
+          }, () => {
+            if (this.state.createdItemSplits.length === splitLength){
+              this.calculateResults()
+            }
+          })
+        })
       })
     })
   }
+
+  calculateResults = () => {
+    const userCosts = this.state.selectedUsers.map(userData => {
+      let total = this.state.createdItemSplits.filter(item => {
+        return item.user.name === userData.name
+      }).map(itemInfo => {
+        return itemInfo.item.cost/itemInfo.splitBetween
+      }).reduce((acc, curr) => {
+        return acc + curr
+      })
+      total= total * (1 + (this.state.tipPerc?this.state.tipPerc:0 + this.state.taxPerc?this.state.taxPerc:0)/100)
+        return {[userData.name]: total}
+    })
+
+    this.setState({ userCosts: userCosts}, () => {
+      this.setState({ checkStage: 'RESULTS', progressPercentage: 100 }, () => console.log('after', this.state))
+    })
+  }
+
+//******************************************************
+// STAGE= 'RETURNS'
+//******************************************************
+
+  handleAnotherReceipt = () => {
+    this.setState({
+      checkStage: 'ADD',
+      createdItemSplits: [],
+      createdItemsArray: [],
+      currentReceiptId: null,
+      imgUrl: '',
+      itemSplits: {},
+      itemsArray: [],
+      notPhotoError: false,
+      payer: {},
+      selectedUsers: [],
+      subTotal: null,
+      tax: null,
+      taxPerc: null,
+      thumbnail: '',
+      tipAmnt: null,
+      tipPerc: null,
+      total: null,
+      userCosts: [],
+      users: []
+    })
+  }
+
+
 
 //******************************************************
 // MOUNTING AND RENDERING
@@ -285,29 +366,32 @@ class App extends React.Component {
   render(){
     return (
       <div className="App">
+        <Progress percent={this.state.progressPercentage} indicating/>
 
         {this.state.checkStage === 'ADD' &&
+          <AddReceipt
+            thumbnail={this.state.thumbnail}
+            imgUrl={this.state.imgUrl}
+            notPhotoError={this.state.notPhotoError}
+            loading={this.state.loading}
+
+            showWidget={this.showWidget}
+            handleUpload={this.handleUpload}
+          />
+        }
+
+        {this.state.checkStage === 'USER' &&
           <React.Fragment>
             <UserSelect
               users={this.state.users}
               selectedUsers={this.state.selectedUsers}
 
+              handleUserSelect={this.handleUserSelect}
               handleUserSearchChange={this.handleUserSearchChange}
               handleAddGuestSubmit={this.handleAddGuestSubmit}
             />
 
-          <Button onClick={this.showWidget}>Add Photo</Button>
 
-            {this.state.notPhotoError &&
-              "Uploaded File must be a photo"
-            }
-
-            {(this.state.thumbnail && !!this.state.selectedUsers.length) &&
-              <React.Fragment>
-                <img src={this.state.thumbnail} alt="img preview" className="imgPrev" id="imgPrev" />
-                <Button onClick={this.handleUpload}>Continue</Button>
-              </React.Fragment>
-            }
           </React.Fragment>
         }
 
@@ -346,6 +430,20 @@ class App extends React.Component {
               submitSplit={this.submitSplit}
             />
           </React.Fragment>
+        }
+
+        {this.state.checkStage === 'RESULTS' &&
+          <React.Fragment>
+            <ResultPage
+              userCosts={this.state.userCosts}
+              createdItemSplits={this.state.createdItemSplits}
+              payer={this.state.payer}
+
+              calculateResults={this.calculateResults}
+              handleAnotherReceipt={this.handleAnotherReceipt}
+            />
+          </React.Fragment>
+
         }
 
       </div>

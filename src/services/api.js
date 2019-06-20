@@ -62,7 +62,6 @@ const addItem = (data) => {
 }
 
 const addItemSplit = (data) => {
-  console.log(data)
   return fetch(`${API_BASE}/item_splits`, {
     method: 'POST',
     headers: {
@@ -108,6 +107,7 @@ const addUserReceipt = (data) => {
     })
   }).then(resp => resp.json())
 }
+
 
 const api = {
   processReceipt,

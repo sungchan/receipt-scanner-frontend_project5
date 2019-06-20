@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Container } from 'semantic-ui-react';
 
 import UserSearchBar from '../components/userSearchBar';
 import UserCreateModal from '../components/userCreateModal';
@@ -10,8 +11,6 @@ class UserSelect extends React.Component {
     modalOpen: false,
     guest:''
   }
-
-
 
   handleOpen = () =>{
     console.log('help')
@@ -33,19 +32,42 @@ class UserSelect extends React.Component {
   render(){
     return (
       <React.Fragment>
-        <UserSearchBar
-          users={this.props.users}
-          handleUserSearchChange={this.props.handleUserSearchChange}
-          selectedUsers={this.props.selectedUsers}
-          handleOpen={this.handleOpen}
+        <Container textAlign="center">
+          <br/>
+          <br/>
+          <h1>Who'd you eat with?</h1>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <UserSearchBar
+            users={this.props.users}
+            handleUserSearchChange={this.props.handleUserSearchChange}
+            selectedUsers={this.props.selectedUsers}
+            handleOpen={this.handleOpen}
           />
-        <UserCreateModal
-          handleClose={this.handleClose}
-          handleChange={this.handleChange}
-          guest={this.state.guest}
-          modalOpen={this.state.modalOpen}
-          handleAddGuestSubmit={this.props.handleAddGuestSubmit}
-        />
+          <UserCreateModal
+            handleClose={this.handleClose}
+            handleChange={this.handleChange}
+            guest={this.state.guest}
+            modalOpen={this.state.modalOpen}
+            handleAddGuestSubmit={this.props.handleAddGuestSubmit}
+          />
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <Button primary size="huge" centered onClick={this.props.handleUserSelect}>Split Check</Button>
+        </Container>
       </React.Fragment>
     )
   }
