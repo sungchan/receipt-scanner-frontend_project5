@@ -1,4 +1,4 @@
-Link to: [Frontend](https://github.com/sungchaan/receipt-scanner-backend_project5)
+Link to: [Backend](https://github.com/sungchaan/receipt-scanner-backend_project5)
 ## Bill Splitter
 Take pictures of restaurant bills to split items between friends
 
