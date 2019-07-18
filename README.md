@@ -1,68 +1,31 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Link to: [Frontend](https://github.com/sungchaan/receipt-scanner-backend_project5)
+## Bill Splitter
+Take pictures of restaurant bills to split items between friends
 
-## Available Scripts
+## Motivation
+Was always 
 
-In the project directory, you can run:
+## Tech/Framework Useed
+<b> Built with </b>
+- [React.js](https://reactjs.org/) frontend
+- [Ruby on Rails](https://rubyonrails.org/) backend
+- [Semantic React UI](https://react.semantic-ui.com/) styling
 
-### `npm start`
+## Features
+- uploads photo of receipt and returns each item and its cost along with the totals and tax
+- allows for edits of costs and calculates tip 
+- assign or split each item between friends 
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation
+Frontend
+1. clone frontend repo and run 'npm install'
+2. run 'npm start' (will default to localhost:3000)
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Backend
+1. clone backend repo and run 'bundle install'
+3. run 'rails db:migrate' then 'rails db:seed'
+4. run 'rails s' (will prompt you to run on another port, hit 'y' and run on port 3001)
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## API Reference
+- [Google Vision API](https://www.google.com/search?q=google+vision+api&rlz=1C5CHFA_enUS814US814&oq=google+vision+api&aqs=chrome..69i57j69i60l2j0j69i65j69i59.3303j0j7&sourceid=chrome&ie=UTF-8) ocr
+- [Cloudinary API](http://cloudinary.com)
