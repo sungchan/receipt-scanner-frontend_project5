@@ -17,14 +17,14 @@ Was always
 - assign or split each item between friends 
 
 ## Installation
-Frontend
-1. clone frontend repo and run 'npm install'
-2. run 'npm start' (will default to localhost:3000)
-
 Backend
 1. clone backend repo and run 'bundle install'
 3. run 'rails db:migrate' then 'rails db:seed'
-4. run 'rails s' (will prompt you to run on another port, hit 'y' and run on port 3001)
+4. run 'rails s' (will default to localhost:3000)
+
+Frontend
+1. clone frontend repo and run 'npm install'
+2. run 'npm start' (will prompt you to run on another port, hit 'y' and run on port 3001)
 
 ## API Reference
 - [Google Vision API](https://www.google.com/search?q=google+vision+api&rlz=1C5CHFA_enUS814US814&oq=google+vision+api&aqs=chrome..69i57j69i60l2j0j69i65j69i59.3303j0j7&sourceid=chrome&ie=UTF-8) ocr
