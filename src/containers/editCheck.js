@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Container, Divider } from 'semantic-ui-react';
+import { Dropdown, Container, Divider, Form } from 'semantic-ui-react';
 
 import CheckEditForm from '../components/checkEditForm';
 
@@ -18,9 +18,13 @@ class EditCheck extends React.Component {
     return (
       <Container textAlign='center'>
         <h1>Edit Check</h1>
+
         {this.props.noPayerSelectedError &&
           <h3>Please select a Payer</h3>
         }
+
+        // <Form value={this.props.placeName}></Form>
+
          <h5>Paid by:</h5>  <Dropdown
           placeholder='Who paid?'
           fluid

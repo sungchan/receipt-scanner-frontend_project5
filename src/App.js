@@ -326,20 +326,35 @@ class App extends React.Component {
   }
 
   calculateResults = () => {
-    const userCosts = this.state.selectedUsers.map(userData => {
-      let total = this.state.createdItemSplits.filter(item => {
-        return item.user.name === userData.name
-      }).map(itemInfo => {
-        return itemInfo.item.cost/itemInfo.splitBetween
-      }).reduce((acc, curr) => {
-        return acc + curr
-      })
-      total= total * (1 + (this.state.tipPerc?this.state.tipPerc:0 + this.state.taxPerc?this.state.taxPerc:0)/100)
-        return {[userData.name]: total, profile_url: userData.profile_url}
-    })
+    let usersSelected = [];
 
-    this.setState({ userCosts: userCosts}, () => {
-      this.setState({ checkStage: 'RESULTS', progressPercentage: 100 }, () => console.log('after', this.state))
+    this.state.createdItemSplits.forEach(item => {
+      if (!usersSelected.includes(item.user_id)){
+        usersSelected.push(item.user_id)
+      }
+    })
+    console.log(usersSelected)
+
+    this.setState({
+      selectedUsers: this.state.selectedUsers.filter(user => usersSelected.includes(user.id))
+    }, ()=>{
+      const userCosts = this.state.selectedUsers.map(userData => {
+        let total = this.state.createdItemSplits.filter(item => {
+          console.log(this.state.createdItemSplits)
+          return item.user.name === userData.name
+        }).map(itemInfo => {
+          return itemInfo.item.cost/itemInfo.splitBetween
+        }).reduce((acc, curr) => {
+          return acc + curr
+        })
+
+        total= total * (1 + (this.state.tipPerc?this.state.tipPerc:0 + this.state.taxPerc?this.state.taxPerc:0)/100)
+          return {[userData.name]: total, profile_url: userData.profile_url}
+      })
+
+      this.setState({ userCosts: userCosts}, () => {
+        this.setState({ checkStage: 'RESULTS', progressPercentage: 100 }, () => console.log('after', this.state))
+      })
     })
   }
 
@@ -371,7 +386,7 @@ class App extends React.Component {
       tipPerc: null,
       total: null,
       userCosts: [],
-      users: []
+      loading: false
     })
   }
 
@@ -430,6 +445,7 @@ class App extends React.Component {
                 subTotal={this.state.subTotal}
                 tax={this.state.tax}
                 noPayerSelectedError={this.state.noPayerSelectedError}
+                placeName={this.state.placeName}
 
                 handleEditSubTotal={this.handleEditSubTotal}
                 handleEditTax={this.handleEditTax}

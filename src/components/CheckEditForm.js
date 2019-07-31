@@ -2,25 +2,25 @@ import React from 'react';
 import { Form, Button, List, Divider } from 'semantic-ui-react';
 
 const CheckEditForm = props => {
-
+  console.log(props.itemsArray)
   return (
     <React.Fragment>
       <Form onSubmit={props.handleCheckEditSubmit}>
-      <List >
 
 
           {props.itemsArray.map((item, i) => {
             if (!isNaN(item.price)){
               return (
-                <Form.Group key={item.yValue}>
-                  <Form.Input value={item.name} onChange={(event) => props.handleCheckEditName(event, i)}/>
-                  <Form.Input type="number" value={item.price} onChange={(event) => props.handleCheckEditPrice(event, i)}/><br/>
+                <Form.Group key={item.yValue}  widths="2" unstackable>
+                  <Form.Input  value={item.name} onChange={(event) => props.handleCheckEditName(event, i)}/>
+                  <Form.Input  type="number" value={item.price} onChange={(event) => props.handleCheckEditPrice(event, i)}/><br/>
                 </Form.Group>
               )
             }
           })}
             <br/>
             <Divider fitted />
+        <List >
           <List.Item>
             <List.Content floated='right'>
                 <h3>SubTotal: &nbsp; ${props.subTotal}</h3>
@@ -58,8 +58,8 @@ const CheckEditForm = props => {
 
           <h2>Total: &nbsp; ${props.total}</h2>
           <Button primary fluid size='huge' type='submit'>Split Check</Button>
-      </List>
-    </Form>
+        </List>
+      </Form>
     </React.Fragment>
   )
 }

@@ -17,7 +17,7 @@ class AddReceipt extends React.Component {
               <br/>
               <br/>
               <br/>
-              <Image size="small" centered src={"https://res.cloudinary.com/sungchan/image/upload/v1560996189/receipt-7_i6fvbo.png"}/>
+              <Image size="small" centered src={"https://res.cloudinary.com/sungchan/image/upload/v1561493642/user%20icons/receipt-7_joiovs.png"}/>
               <Header as='h1'>Check Splitter </Header>
               <br/>
               <Divider horizontal>-</Divider>
