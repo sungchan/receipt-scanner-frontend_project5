@@ -13,7 +13,7 @@ import SplitCheck from './containers/splitCheck';
 import ResultPage from './containers/resultPage';
 
 
-
+// test
 
 class App extends React.Component {
 
