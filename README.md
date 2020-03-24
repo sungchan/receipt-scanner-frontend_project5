@@ -19,8 +19,8 @@ Was always
 ## Installation
 Backend
 1. clone backend repo and run 'bundle install'
-3. run 'rails db:migrate' then 'rails db:seed'
-4. run 'rails s' (will default to localhost:3000)
+2. run 'rails db:migrate' then 'rails db:seed'
+3. run 'rails s' (will default to localhost:3000)
 
 Frontend
 1. clone frontend repo and run 'npm install'
