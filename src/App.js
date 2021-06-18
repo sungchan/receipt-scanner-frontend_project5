@@ -1,6 +1,6 @@
 import React from 'react';
 import { Progress } from 'semantic-ui-react';
-// import {Image, Video, Transformation, CloudinaryContext} from 'cloudinary-react';
+import {Image, Video, Transformation, CloudinaryContext} from 'cloudinary-react';
 
 import api from './services/api';
 import itemizer from './services/receiptItemizer';
