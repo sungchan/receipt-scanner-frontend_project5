@@ -2,6 +2,17 @@ Link to: [Backend](https://github.com/sungchaan/receipt-scanner-backend_project5
 ## Bill Splitter
 Take pictures of restaurant bills to split items between friends
 
+![Add Receipt](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/1.%20Add%20Receipt%20.gif)
+
+![Add User](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/2.%20Add%20users.gif)
+
+![Add Tip](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/3.%20Add%20tip.gif)
+
+![Assign items](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/4.%20Assign%20items.gif)
+
+![Results](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/5.%20Results.gif)
+
+
 ## Motivation
 Was always 
 
