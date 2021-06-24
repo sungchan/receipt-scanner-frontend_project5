@@ -3,19 +3,19 @@ Link to: [Backend](https://github.com/sungchaan/receipt-scanner-backend_project5
 Take pictures of restaurant bills to split items between friends
 
 ## Demo
-Upload/take photo of bill (uploaded in this case)
+Upload/take photo of bill (uploaded in this case)\
 ![Add Receipt](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/1.%20Add%20Receipt%20.gif)
 
-Select who you ate with, can add new users if person isn't found
+Select who you ate with, can add new users if person isn't found\
 ![Add User](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/2.%20Add%20users.gif)
 
-Select who's paying, correct rare errors and add responsive tip by either percentage or amount
+Select who's paying, correct rare errors and add responsive tip by either percentage or amount\
 ![Add Tip](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/3.%20Add%20tip.gif)
 
-Split items based on who ordered what, can split items between multiple people
+Split items based on who ordered what, can split items between multiple people\
 ![Assign items](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/4.%20Assign%20items.gif)
 
-Shows how much is owed
+Shows how much is owed\
 ![Results](https://github.com/sungchan/receipt-scanner-frontend_project5/blob/master/gifs/5.%20Results.gif)
 
 
